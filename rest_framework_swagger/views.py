@@ -80,8 +80,14 @@ class SwaggerUIView(View):
                     json.dumps(getattr(settings, 'CSRF_COOKIE_NAME', 'csrftoken'))),
             }
         }
+        d = {}
+        for k in RequestContext(request, data).dicts:
+            if 'django_settings' in k:
+                d = k
+                break;
         response = render_to_response(
-            template_name, RequestContext(request, data))
+            #template_name, RequestContext(request, data))
+            template_name, d)
 
         return response
 
